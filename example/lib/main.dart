@@ -49,9 +49,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true),
       themeMode: ThemeMode.dark,
       home: Scaffold(
         appBar: AppBar(title: const Text('🎉 Flutter Confetti🎉 ')),
@@ -68,7 +66,6 @@ class _MainAppState extends State<MainApp> {
                   highlighter: _dartDarkHighlighter,
                   onTap: () {
                     ///BEGIN
-
                     Confetti.launch(
                       context,
                       options: const ConfettiOptions(
@@ -297,7 +294,8 @@ class _MainAppState extends State<MainApp> {
                   },
                 ),
                 CodeBlock(
-                  buttonText: 'Launch(then click the kill button)',
+                  buttonText: 'Launch',
+                  tip: 'Launch then click the kill button.',
                   highlighter: _dartDarkHighlighter,
                   onTap: () {
                     ///BEGIN
@@ -343,21 +341,21 @@ class _MainAppState extends State<MainApp> {
 
                     ///END
                   },
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(
-                        width: 1, color: Theme.of(context).primaryColor),
-                  ),
-                  child: ClipPath(
-                    child: Confetti(
-                      controller: controller,
-                      options: const ConfettiOptions(
-                          particleCount: 100, spread: 70, y: 1),
-                    ),
-                  ),
+                  overWidget: Positioned(
+                      right: 24,
+                      left: 24,
+                      bottom: 24,
+                      top: 82,
+                      child: Container(
+                        // height: 200,
+                        child: ClipPath(
+                          child: Confetti(
+                            controller: controller,
+                            options: const ConfettiOptions(
+                                particleCount: 100, spread: 70, y: 1),
+                          ),
+                        ),
+                      )),
                 ),
               ],
             ),

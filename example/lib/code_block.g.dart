@@ -1,5 +1,5 @@
 /// AUTO-GENERATED FILE, DO NOT MODIFY
-var titleList = ['Basic Cannon','Random Direction','Fireworks','Stars','Emoji','School Pride','Launch(then click the kill button)','Not Full Screen'];
+var titleList = ['Basic Cannon','Random Direction','Fireworks','Stars','Emoji','School Pride','Launch','Not Full Screen'];
 var codeList = ['''
 
 Confetti.launch(
