@@ -68,7 +68,11 @@ class _MainAppState extends State<MainApp> {
                     Confetti.launch(
                       context,
                       options: const ConfettiOptions(
-                          particleCount: 100, spread: 70, y: 0.6),
+                        particleCount: 100,
+                        spread: 70,
+                        y: 0.6,
+                        // flat: true,
+                      ),
                     );
 
                     ///END
@@ -85,11 +89,8 @@ class _MainAppState extends State<MainApp> {
 
                     Confetti.launch(
                       context,
-                      options: ConfettiOptions(
-                          angle: randomInRange(55, 125),
-                          spread: randomInRange(50, 70),
-                          particleCount: randomInRange(50, 100).toInt(),
-                          y: 0.6),
+                      options:
+                          ConfettiOptions(angle: randomInRange(55, 125), spread: randomInRange(50, 70), particleCount: randomInRange(50, 100).toInt(), y: 0.6),
                     );
 
                     ///END
@@ -120,22 +121,12 @@ class _MainAppState extends State<MainApp> {
                       Confetti.launch(
                         context,
                         options: ConfettiOptions(
-                            particleCount: count,
-                            startVelocity: 30,
-                            spread: 360,
-                            ticks: 60,
-                            x: randomInRange(0.1, 0.3),
-                            y: Random().nextDouble() - 0.2),
+                            particleCount: count, startVelocity: 30, spread: 360, ticks: 60, x: randomInRange(0.1, 0.3), y: Random().nextDouble() - 0.2),
                       );
                       Confetti.launch(
                         context,
                         options: ConfettiOptions(
-                            particleCount: count,
-                            startVelocity: 30,
-                            spread: 360,
-                            ticks: 60,
-                            x: randomInRange(0.7, 0.9),
-                            y: Random().nextDouble() - 0.2),
+                            particleCount: count, startVelocity: 30, spread: 360, ticks: 60, x: randomInRange(0.7, 0.9), y: Random().nextDouble() - 0.2),
                       );
                     });
 
@@ -154,19 +145,10 @@ class _MainAppState extends State<MainApp> {
                         gravity: 0,
                         decay: 0.94,
                         startVelocity: 30,
-                        colors: [
-                          Color(0xffFFE400),
-                          Color(0xffFFBD00),
-                          Color(0xffE89400),
-                          Color(0xffFFCA6C),
-                          Color(0xffFDFFB8)
-                        ]);
+                        colors: [Color(0xffFFE400), Color(0xffFFBD00), Color(0xffE89400), Color(0xffFFCA6C), Color(0xffFDFFB8)]);
 
                     shoot() {
-                      Confetti.launch(context,
-                          options:
-                              options.copyWith(particleCount: 40, scalar: 1.2),
-                          particleBuilder: (index) => Star());
+                      Confetti.launch(context, options: options.copyWith(particleCount: 40, scalar: 1.2), particleBuilder: (index) => Star());
                       Confetti.launch(context,
                           options: options.copyWith(
                             particleCount: 10,
@@ -211,12 +193,7 @@ class _MainAppState extends State<MainApp> {
                       if (controller1 == null) {
                         controller1 = Confetti.launch(
                           context,
-                          options: const ConfettiOptions(
-                              particleCount: 2,
-                              angle: 60,
-                              spread: 55,
-                              x: 0,
-                              colors: colors),
+                          options: const ConfettiOptions(particleCount: 2, angle: 60, spread: 55, x: 0, colors: colors),
                           onFinished: (overlayEntry) {
                             if (isDone) {
                               overlayEntry.remove();
@@ -230,12 +207,7 @@ class _MainAppState extends State<MainApp> {
                       if (controller2 == null) {
                         controller2 = Confetti.launch(
                           context,
-                          options: const ConfettiOptions(
-                              particleCount: 2,
-                              angle: 120,
-                              spread: 55,
-                              x: 1,
-                              colors: colors),
+                          options: const ConfettiOptions(particleCount: 2, angle: 120, spread: 55, x: 1, colors: colors),
                           onFinished: (overlayEntry) {
                             if (isDone) {
                               overlayEntry.remove();
@@ -275,14 +247,12 @@ class _MainAppState extends State<MainApp> {
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(
-                        width: 1, color: Theme.of(context).primaryColor),
+                    border: Border.all(width: 1, color: Theme.of(context).primaryColor),
                   ),
                   child: ClipPath(
                     child: Confetti(
                       controller: controller,
-                      options: const ConfettiOptions(
-                          particleCount: 100, spread: 70, y: 1),
+                      options: const ConfettiOptions(particleCount: 100, spread: 70, y: 1),
                     ),
                   ),
                 )
