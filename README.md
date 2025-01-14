@@ -163,7 +163,7 @@ class Circle extends ConfettiParticle {
 }
 ```
 
-As soon as you have created your shape, you can use it in the `particleBuilder`:
+As soon as you have created your shape, you can use it in the `particleBuilder`.
 
 ### `ConfettiController`
 
@@ -222,4 +222,4 @@ Confetti.launch(context,
 ## Thanks
 
 The package was totally inspired by [canvas-confetti](https://github.com/catdad/canvas-confetti), a wonderful confetti animation in the browser,
-I just do a little work to make it in flutter.
+I just do a little work to make it work in flutter.
