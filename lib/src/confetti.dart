@@ -117,7 +117,7 @@ class _ConfettiState extends State<Confetti> with SingleTickerProviderStateMixin
     final particleBuilder = widget.particleBuilder != null ? widget.particleBuilder! : (int index) => [Circle(), Square()][randomInt(0, 2)];
 
     double x = options.x * containerWidth;
-    double y = options.y * containerWidth;
+    double y = options.y * containerHeight;
 
     for (int i = 0; i < options.particleCount; i++) {
       final color = colors[i % colorsCount];
