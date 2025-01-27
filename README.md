@@ -7,7 +7,7 @@ Easily make confetti animation in Flutter.
 ## Features
 
 - easy to use.
-- various out-of-the-box shapes, like the circle, the star, the square, and more.
+- various out-of-the-box shapes: star, circle, square, triangle, emoji.
 - many examples that demonstrated the different confetti animation.
 - easy to make shapes you want.
 
@@ -31,7 +31,7 @@ Confetti.launch(
 
 ## API
 
-### `Confetti.launch(BuildContext context, {required ConfettiOptions options, ParticleBuilder? particleBuilder})`
+### `ConfettiController Confetti.launch(BuildContext context, {required ConfettiOptions options, ParticleBuilder? particleBuilder})`
 
 A quick way to launch the confetti. can't use the method without the MaterialApp, CupertinoApp, or WidgetsApp as the root widget. Because the method depend on the Overlay, but you can use the Confetti widget directly.
 
@@ -128,7 +128,7 @@ Or you can create your own builder, such as return the Star like below:
  );
 ```
 
-Up to now there are three shapes: Circle, Square, and Star, but you can create a shape by inheriting the ConfettiParticle class, like the Circle class below:
+Up to now there are those shapes: Circle, Square, Triangle, Emoji and Star, and you can create a shape by inheriting the ConfettiParticle class, like the Circle class below:
 
 ```dart
 /// 1. Inherit from ConfettiParticle
@@ -163,9 +163,63 @@ class Circle extends ConfettiParticle {
 }
 ```
 
-As soon as you have created your shape, you can use it in the `particleBuilder`:
+As soon as you have created your shape, you can use it in the `particleBuilder`.
+
+### `ConfettiController`
+
+Using the methods of the controller instance to control the confetti:
+
+- `controller.launch()`, launch the confetti.
+- `controller.kill()`, kill the showing confetti.
+
+## How to use emoji
+
+If you just want to use system emoji, you can use the `Emoji` class directly:
+
+```dart
+Confetti.launch(context,
+    /// ...
+    particleBuilder: (index) => Emoji(
+        emoji: '🍄'));
+```
+
+Or you can use it with the `google_fonts` package:
+
+```dart
+import 'package:google_fonts/google_fonts.dart';
+
+Confetti.launch(context,
+    /// ...
+    particleBuilder: (index) => Emoji(
+        emoji: '🍄',
+        textStyle: GoogleFonts.notoColorEmoji()));
+```
+
+Or use any emoji fonts you want:
+
+1. Download the font and add it to your pubspec.yaml.
+
+```yaml
+flutter:
+  fonts:
+    - family: NotoEmoji
+      fonts:
+        - asset: fonts/NotoColorEmoji-Regular.ttf
+          weight: 400
+```
+
+2. Then use it in the `TextStyle`:
+
+```dart
+Confetti.launch(context,
+    /// ...
+    particleBuilder: (index) => Emoji(
+        emoji: '🍄',
+        textStyle: TextStyle(
+          fontSize: 18, fontFamily: 'NotoEmoji')));
+```
 
 ## Thanks
 
 The package was totally inspired by [canvas-confetti](https://github.com/catdad/canvas-confetti), a wonderful confetti animation in the browser,
-I just do a little work to make it in flutter.
+I just do a little work to make it work in flutter.
