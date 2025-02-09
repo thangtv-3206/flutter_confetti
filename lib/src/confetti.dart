@@ -34,13 +34,7 @@ class Confetti extends StatefulWidget {
   /// the default value is false.
   final bool instant;
 
-  const Confetti(
-      {super.key,
-      this.options,
-      this.particleBuilder,
-      required this.controller,
-      this.onFinished,
-      this.instant = false});
+  const Confetti({super.key, this.options, this.particleBuilder, required this.controller, this.onFinished, this.instant = false});
 
   @override
   State<Confetti> createState() => _ConfettiState();
@@ -57,6 +51,7 @@ class Confetti extends StatefulWidget {
     BuildContext context, {
     required ConfettiOptions options,
     ParticleBuilder? particleBuilder,
+    Function(OverlayEntry overlayEntry)? insertInOverlay,
     Function(OverlayEntry overlayEntry)? onFinished,
   }) {
     OverlayEntry? overlayEntry;
@@ -89,14 +84,17 @@ class Confetti extends StatefulWidget {
         },
         opaque: false);
 
-    Overlay.of(context).insert(overlayEntry);
+    if (insertInOverlay != null) {
+      insertInOverlay(overlayEntry);
+    } else {
+      Overlay.of(context).insert(overlayEntry);
+    }
 
     return controller;
   }
 }
 
-class _ConfettiState extends State<Confetti>
-    with SingleTickerProviderStateMixin {
+class _ConfettiState extends State<Confetti> with SingleTickerProviderStateMixin {
   ConfettiOptions get options {
     return widget.options ?? const ConfettiOptions();
   }
@@ -116,12 +114,10 @@ class _ConfettiState extends State<Confetti>
     final colors = options.colors;
     final colorsCount = colors.length;
 
-    final particleBuilder = widget.particleBuilder != null
-        ? widget.particleBuilder!
-        : (int index) => [Circle(), Square()][randomInt(0, 2)];
+    final particleBuilder = widget.particleBuilder != null ? widget.particleBuilder! : (int index) => [Circle(), Square()][randomInt(0, 2)];
 
     double x = options.x * containerWidth;
-    double y = options.y * containerWidth;
+    double y = options.y * containerHeight;
 
     for (int i = 0; i < options.particleCount; i++) {
       final color = colors[i % colorsCount];
@@ -136,8 +132,7 @@ class _ConfettiState extends State<Confetti>
   }
 
   initAnimation() {
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
     animationController.addListener(() {
       final finished = !glueList.any((element) => !element.physics.finished);
@@ -215,8 +210,7 @@ class _ConfettiState extends State<Confetti>
 
       return CustomPaint(
         willChange: true,
-        painter: Painter(
-            glueList: glueList, animationController: animationController),
+        painter: Painter(glueList: glueList, animationController: animationController),
         child: const SizedBox.expand(),
       );
     });
