@@ -34,7 +34,13 @@ class Confetti extends StatefulWidget {
   /// the default value is false.
   final bool instant;
 
-  const Confetti({super.key, this.options, this.particleBuilder, required this.controller, this.onFinished, this.instant = false});
+  const Confetti(
+      {super.key,
+      this.options,
+      this.particleBuilder,
+      required this.controller,
+      this.onFinished,
+      this.instant = false});
 
   @override
   State<Confetti> createState() => _ConfettiState();
@@ -47,6 +53,7 @@ class Confetti extends StatefulWidget {
   /// [particleBuilder] is the builder that creates the particles. if you don't
   /// provide one, a default one will be used.The default particles are circles and squares..
   /// [onFinished] is a callback that will be called when the confetti finished its animation.
+  /// [insertInOverlay] is a callback that will be called to insert the confetti into the overlay.
   static ConfettiController launch(
     BuildContext context, {
     required ConfettiOptions options,
@@ -94,7 +101,8 @@ class Confetti extends StatefulWidget {
   }
 }
 
-class _ConfettiState extends State<Confetti> with SingleTickerProviderStateMixin {
+class _ConfettiState extends State<Confetti>
+    with SingleTickerProviderStateMixin {
   ConfettiOptions get options {
     return widget.options ?? const ConfettiOptions();
   }
@@ -114,7 +122,9 @@ class _ConfettiState extends State<Confetti> with SingleTickerProviderStateMixin
     final colors = options.colors;
     final colorsCount = colors.length;
 
-    final particleBuilder = widget.particleBuilder != null ? widget.particleBuilder! : (int index) => [Circle(), Square()][randomInt(0, 2)];
+    final particleBuilder = widget.particleBuilder != null
+        ? widget.particleBuilder!
+        : (int index) => [Circle(), Square()][randomInt(0, 2)];
 
     double x = options.x * containerWidth;
     double y = options.y * containerHeight;
@@ -132,7 +142,8 @@ class _ConfettiState extends State<Confetti> with SingleTickerProviderStateMixin
   }
 
   initAnimation() {
-    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
     animationController.addListener(() {
       final finished = !glueList.any((element) => !element.physics.finished);
@@ -210,7 +221,8 @@ class _ConfettiState extends State<Confetti> with SingleTickerProviderStateMixin
 
       return CustomPaint(
         willChange: true,
-        painter: Painter(glueList: glueList, animationController: animationController),
+        painter: Painter(
+            glueList: glueList, animationController: animationController),
         child: const SizedBox.expand(),
       );
     });

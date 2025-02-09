@@ -1,3 +1,10 @@
+## 0.4.0
+
+- Fix y position for particles.
+- Add the `insertInOverlay` argument to the `Confetti.launch` function. This will be useful when you need to add the confetti OverlayEntry to a custom overlay.
+
+Thanks to [@cosminpahomi](https://github.com/cosminpahomi)
+
 ## 0.3.4
 
 - Add the `controller.kill()` method to kill the showing confetti
