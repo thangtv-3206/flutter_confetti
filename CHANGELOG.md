@@ -1,3 +1,7 @@
+## 0.5.0
+
+- add the `enableCustomScheduler` argument to `Confetti`. If true, the confetti will use a timer to schedule the confetti, it is useful when you want to keep the speed of the confetti constant on every device with different refresh rates.
+
 ## 0.4.0
 
 - Fix y position for particles.
