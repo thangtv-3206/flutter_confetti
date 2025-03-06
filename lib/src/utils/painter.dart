@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_confetti/src/utils/glue.dart';
 
 class Painter extends CustomPainter {
-  final AnimationController animationController;
+  final AnimationController? animationController;
   final List<Glue> glueList;
 
-  Painter({required this.glueList, required this.animationController})
+  Painter({required this.glueList, this.animationController})
       : super(repaint: animationController);
 
   @override

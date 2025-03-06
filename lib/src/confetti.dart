@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -34,13 +35,18 @@ class Confetti extends StatefulWidget {
   /// the default value is false.
   final bool instant;
 
+  /// If true, the confetti will use a timer to schedule the confetti, it is useful when you want to keep the
+  /// speed of the confetti constant on every device with different  refresh rates.
+  final bool enableCustomScheduler;
+
   const Confetti(
       {super.key,
       this.options,
       this.particleBuilder,
       required this.controller,
       this.onFinished,
-      this.instant = false});
+      this.instant = false,
+      this.enableCustomScheduler = false});
 
   @override
   State<Confetti> createState() => _ConfettiState();
@@ -54,12 +60,16 @@ class Confetti extends StatefulWidget {
   /// provide one, a default one will be used.The default particles are circles and squares..
   /// [onFinished] is a callback that will be called when the confetti finished its animation.
   /// [insertInOverlay] is a callback that will be called to insert the confetti into the overlay.
+  /// [enableCustomScheduler] is a flag that indicates whether to use a custom scheduler. If true,
+  /// the confetti will use a timer to schedule the confetti, it is useful when you want to keep the
+  /// speed of the confetti constant on every device with different  refresh rates.
   static ConfettiController launch(
     BuildContext context, {
     required ConfettiOptions options,
     ParticleBuilder? particleBuilder,
     Function(OverlayEntry overlayEntry)? insertInOverlay,
     Function(OverlayEntry overlayEntry)? onFinished,
+    bool enableCustomScheduler = false,
   }) {
     OverlayEntry? overlayEntry;
     final controller = ConfettiController();
@@ -75,6 +85,7 @@ class Confetti extends StatefulWidget {
             width: 2,
             height: 2,
             child: Confetti(
+              enableCustomScheduler: enableCustomScheduler,
               controller: controller,
               options: options.copyWith(x: 0.5, y: 0.5),
               particleBuilder: particleBuilder,
@@ -107,9 +118,14 @@ class _ConfettiState extends State<Confetti>
     return widget.options ?? const ConfettiOptions();
   }
 
+  bool get enableCustomScheduler => widget.enableCustomScheduler == true;
+
   List<Glue> glueList = [];
 
   late AnimationController animationController;
+
+  late Timer? timer;
+  static const frameDuration = Duration(milliseconds: 16);
 
   late double containerWidth;
   late double containerHeight;
@@ -141,32 +157,54 @@ class _ConfettiState extends State<Confetti>
     }
   }
 
-  initAnimation() {
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-
-    animationController.addListener(() {
+  initScheduler() {
+    schedule() {
       final finished = !glueList.any((element) => !element.physics.finished);
 
       if (finished) {
-        animationController.stop();
+        if (enableCustomScheduler) {
+          timer?.cancel();
+        } else {
+          animationController.stop();
+        }
 
         if (widget.onFinished != null) {
           widget.onFinished!();
         }
       }
-    });
+    }
+
+    if (enableCustomScheduler) {
+      timer = Timer.periodic(frameDuration, (_) {
+        schedule();
+
+        setState(() {}); // refresh the screen
+      });
+    } else {
+      animationController = AnimationController(
+          vsync: this, duration: const Duration(seconds: 1));
+
+      animationController.addListener(() {
+        schedule();
+      });
+    }
   }
 
-  playAnimation() {
-    if (animationController.isAnimating == false) {
-      animationController.repeat();
+  play() {
+    if (enableCustomScheduler) {
+      if (timer == null || !timer!.isActive) {
+        initScheduler();
+      }
+    } else {
+      if (animationController.isAnimating == false) {
+        animationController.repeat();
+      }
     }
   }
 
   launch() {
     addParticles();
-    playAnimation();
+    play();
   }
 
   kill() {
@@ -179,7 +217,7 @@ class _ConfettiState extends State<Confetti>
   void initState() {
     super.initState();
 
-    initAnimation();
+    initScheduler();
 
     if (widget.instant) {
       WidgetsBinding.instance.addPostFrameCallback(
@@ -206,7 +244,11 @@ class _ConfettiState extends State<Confetti>
 
   @override
   void dispose() {
-    animationController.dispose();
+    if (enableCustomScheduler) {
+      timer?.cancel();
+    } else {
+      animationController.dispose();
+    }
 
     Launcher.unload(widget.controller);
 
@@ -222,7 +264,9 @@ class _ConfettiState extends State<Confetti>
       return CustomPaint(
         willChange: true,
         painter: Painter(
-            glueList: glueList, animationController: animationController),
+            glueList: glueList,
+            animationController:
+                enableCustomScheduler ? null : animationController),
         child: const SizedBox.expand(),
       );
     });
