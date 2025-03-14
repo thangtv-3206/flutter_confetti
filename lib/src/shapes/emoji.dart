@@ -17,12 +17,12 @@ class Emoji extends ConfettiParticle {
 
   ui.Image? _cachedImage;
 
-  Future<ui.Image> _createTextImage() async {
+  Future<ui.Image> _createTextImage(ConfettiPhysics physics) async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     final textStyle = this.textStyle ?? const TextStyle();
     final fontSize = textStyle.fontSize ?? 18;
-    final scaleFontSize = fontSize * 4;
+    final scaleFontSize = fontSize * 4 * physics.scalar;
 
     final textPainter = TextPainter(
       text: TextSpan(
@@ -33,7 +33,7 @@ class Emoji extends ConfettiParticle {
     textPainter.paint(canvas, Offset.zero);
 
     final picture = recorder.endRecording();
-    final imageSize = (scaleFontSize + 10).toInt();
+    final imageSize = ((scaleFontSize + scaleFontSize / 2)).toInt();
 
     return picture.toImage(imageSize, imageSize);
   }
@@ -44,7 +44,7 @@ class Emoji extends ConfettiParticle {
     required Canvas canvas,
   }) {
     if (_cachedImage == null) {
-      _createTextImage().then((image) {
+      _createTextImage(physics).then((image) {
         _cachedImage = image;
       });
       return;

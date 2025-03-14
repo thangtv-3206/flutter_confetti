@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Fixed [#9](https://github.com/cj0x39e/flutter_confetti/issues/9)
+
 ## 0.5.0
 
 - add the `enableCustomScheduler` argument to `Confetti`. If true, the confetti will use a timer to schedule the confetti, it is useful when you want to keep the speed of the confetti constant on every device with different refresh rates.
