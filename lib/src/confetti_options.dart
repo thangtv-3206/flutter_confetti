@@ -1,13 +1,43 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
-const List<Color> defaultColors = [
-  Color(0xFF26ccff),
-  Color(0xFFa25afd),
-  Color(0xFFff5e7e),
-  Color(0xFFfcff42),
-  Color(0xFFffa62d),
-  Color(0xFFff36ff),
-];
+const List<Gradient> defaultColors = [redColor, sliverColor, goldColor];
+
+const redColor = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [
+    Color(0xFFEF3945),
+    Color(0xFFE65C64),
+    Color(0xFFAC333B),
+    Color(0xFF582024)
+  ],
+  stops: [0, 0.22, 0.66, 1.0],
+);
+
+const sliverColor = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [
+    Color(0xFFD5D3CC),
+    Color(0xFF848172),
+    Color(0xFFFFFFFF),
+    Color(0xFF3E3E3E),
+    Color(0xFFE5E5E5)
+  ],
+);
+
+const goldColor = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [
+    Color(0xFFFFEAC3),
+    Color(0xFF9F8325),
+    Color(0xFFF7D237),
+    Color(0xFFFFFFFF),
+    Color(0xFFD8BC21)
+  ],
+  stops: [0, 0.2, 0.51, 0.78, 1.0],
+);
 
 class ConfettiOptions {
   /// The number of confetti to launch.
@@ -33,11 +63,6 @@ class ConfettiOptions {
   /// but there are no limits. You can even make particles go up if you'd like.
   final double gravity;
 
-  /// How much to the side the confetti will drift.
-  /// The default is 0, meaning that they will fall straight down.
-  /// Use a negative number for left and positive number for right.
-  final double drift;
-
   ///  Optionally turns off the tilt and wobble that three dimensional confetti
   /// would have in the real world.
   final bool flat;
@@ -54,7 +79,7 @@ class ConfettiOptions {
   final double y;
 
   /// An array of color strings.
-  final List<Color> colors;
+  final List<Gradient> colors;
 
   /// Scale factor for each confetti particle.
   /// Use decimals to make the confetti smaller.
@@ -68,7 +93,6 @@ class ConfettiOptions {
       this.startVelocity = 45,
       this.decay = 0.9,
       this.gravity = 1,
-      this.drift = 0,
       this.flat = false,
       this.scalar = 1,
       this.x = 0.5,
@@ -91,7 +115,7 @@ class ConfettiOptions {
     double? x,
     double? y,
     int? ticks,
-    List<Color>? colors,
+    List<Gradient>? colors,
   }) {
     return ConfettiOptions(
       particleCount: particleCount ?? this.particleCount,
@@ -100,7 +124,6 @@ class ConfettiOptions {
       startVelocity: startVelocity ?? this.startVelocity,
       decay: decay ?? this.decay,
       gravity: gravity ?? this.gravity,
-      drift: drift ?? this.drift,
       flat: flat ?? this.flat,
       scalar: scalar ?? this.scalar,
       x: x ?? this.x,

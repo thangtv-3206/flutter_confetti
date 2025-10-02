@@ -2,16 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_confetti/src/confetti_controller.dart';
-import 'package:flutter_confetti/src/confetti_options.dart';
-import 'package:flutter_confetti/src/confetti_physics.dart';
-import 'package:flutter_confetti/src/shapes/square.dart';
+import 'package:flutter_confetti/flutter_confetti.dart';
 import 'package:flutter_confetti/src/utils/glue.dart';
 import 'package:flutter_confetti/src/utils/launcher.dart';
 import 'package:flutter_confetti/src/utils/launcher_config.dart';
 import 'package:flutter_confetti/src/utils/painter.dart';
-import 'package:flutter_confetti/src/confetti_particle.dart';
-import 'package:flutter_confetti/src/shapes/circle.dart';
 
 typedef ParticleBuilder = ConfettiParticle Function(int index);
 
@@ -135,19 +130,15 @@ class _ConfettiState extends State<Confetti>
   }
 
   addParticles() {
-    final colors = options.colors;
-    final colorsCount = colors.length;
-
     final particleBuilder = widget.particleBuilder != null
         ? widget.particleBuilder!
-        : (int index) => [Circle(), Square()][randomInt(0, 2)];
+        : (int index) => Quadrangle();
 
     double x = options.x * containerWidth;
     double y = options.y * containerHeight;
 
     for (int i = 0; i < options.particleCount; i++) {
-      final color = colors[i % colorsCount];
-      final physic = ConfettiPhysics.fromOptions(options: options, color: color)
+      final physic = ConfettiPhysics.fromOptions(options: options)
         ..x = x
         ..y = y;
 

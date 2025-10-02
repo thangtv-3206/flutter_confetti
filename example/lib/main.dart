@@ -155,13 +155,7 @@ class _MainAppState extends State<MainApp> {
                         gravity: 0,
                         decay: 0.94,
                         startVelocity: 30,
-                        colors: [
-                          Color(0xffFFE400),
-                          Color(0xffFFBD00),
-                          Color(0xffE89400),
-                          Color(0xffFFCA6C),
-                          Color(0xffFDFFB8)
-                        ]);
+                   );
 
                     shoot() {
                       Confetti.launch(context,
@@ -230,11 +224,6 @@ class _MainAppState extends State<MainApp> {
                   onTap: () {
                     ///BEGIN
 
-                    const colors = [
-                      Color(0xffbb0000),
-                      Color(0xffffffff),
-                    ];
-
                     int frameTime = 1000 ~/ 24;
                     int total = 15 * 1000 ~/ frameTime;
                     int progress = 0;
@@ -258,8 +247,7 @@ class _MainAppState extends State<MainApp> {
                               particleCount: 2,
                               angle: 60,
                               spread: 55,
-                              x: 0,
-                              colors: colors),
+                              x: 0),
                           onFinished: (overlayEntry) {
                             if (isDone) {
                               overlayEntry.remove();
@@ -277,8 +265,7 @@ class _MainAppState extends State<MainApp> {
                               particleCount: 2,
                               angle: 120,
                               spread: 55,
-                              x: 1,
-                              colors: colors),
+                              x: 1),
                           onFinished: (overlayEntry) {
                             if (isDone) {
                               overlayEntry.remove();
